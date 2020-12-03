@@ -16,19 +16,28 @@ class Area(private val lines: List<String>) {
   fun isTree(x: Int, y: Int) = lines[y][x % width] == '#'
   fun isTree(p: Position) = isTree(p.x, p.y)
   fun contains(p: Position) = p.y < height
+
+  fun numberOfTrees(s: Slope): Long {
+    var p = Position(0, 0)
+    var count = 0
+    do {
+      if (isTree(p)) {
+        count++
+      }
+      p = p.move(s)
+    } while (contains(p))
+    return count.toLong()
+  }
 }
 
 fun main(args: Array<String>) {
   val area = Area(readLines(args[0]))
 
-  val slope = Slope(3, 1)
-  var p = Position(0, 0)
-  var count = 0
-  do {
-    if (area.isTree(p)) {
-      count++
-    }
-    p = p.move(slope)
-  } while (area.contains(p))
-  println(count)
+  println(area.numberOfTrees(Slope(3, 1)))
+
+  println(area.numberOfTrees(Slope(1, 1)) *
+            area.numberOfTrees(Slope(3, 1)) *
+            area.numberOfTrees(Slope(5, 1)) *
+            area.numberOfTrees(Slope(7, 1)) *
+            area.numberOfTrees(Slope(1, 2)))
 }
