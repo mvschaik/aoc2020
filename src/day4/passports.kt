@@ -8,11 +8,11 @@ fun collectFields(line: String) =
     .map { it.split(":".toRegex()) }
     .map { it[0] to it[1] }.toMap()
 
-val validators: Map<String, (String) -> Boolean> = mapOf(
+val validators = mapOf(
   "byr" to { s: String -> s.matches("\\d{4}".toRegex()) && s.toInt() in 1920 .. 2002 },
-  "iyr" to { s: String -> s.matches("\\d{4}".toRegex()) && s.toInt() in 2010 .. 2020 },
-  "eyr" to { s: String -> s.matches("\\d{4}".toRegex()) && s.toInt() in 2020 .. 2030 },
-  "hgt" to { s: String ->
+  "iyr" to { s -> s.matches("\\d{4}".toRegex()) && s.toInt() in 2010 .. 2020 },
+  "eyr" to { s -> s.matches("\\d{4}".toRegex()) && s.toInt() in 2020 .. 2030 },
+  "hgt" to { s ->
     val match = "(\\d+)(cm|in)".toRegex().matchEntire(s)
     when (match?.groupValues?.get(2)) {
       "cm" -> match.groupValues[1].toInt() in 150..193
@@ -20,9 +20,9 @@ val validators: Map<String, (String) -> Boolean> = mapOf(
       else -> false
     }
   },
-  "hcl" to { s: String -> s.matches("#[0-9a-f]{6}".toRegex()) },
-  "ecl" to { s: String -> s.matches("(amb|blu|brn|gry|grn|hzl|oth)".toRegex()) },
-  "pid" to { s: String -> s.matches("\\d{9}".toRegex())}
+  "hcl" to { s -> s.matches("#[0-9a-f]{6}".toRegex()) },
+  "ecl" to { s -> s.matches("(amb|blu|brn|gry|grn|hzl|oth)".toRegex()) },
+  "pid" to { s -> s.matches("\\d{9}".toRegex())}
 )
 
 fun main(args: Array<String>) {
