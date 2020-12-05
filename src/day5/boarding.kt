@@ -19,4 +19,11 @@ fun main(args: Array<String>) {
   println(seatId(decodeSeat("BBFFBBFRLL")) == 820)
 
   println(readLines(args[0]).map(::decodeSeat).map(::seatId).max())
+
+  val allSeats = readLines(args[0]).map(::decodeSeat).map(::seatId).toSet()
+  for (id in allSeats.min()!! .. allSeats.max()!!) {
+    if (!allSeats.contains(id) && allSeats.contains(id+1) && allSeats.contains(id-1)) {
+      println(id)
+    }
+  }
 }
