@@ -28,4 +28,9 @@ fun main(args: Array<String>) {
   fun containers(s: String): Set<String> = containment[s].orEmpty()
   fun allContainers(s: String): Set<String> = containers(s) + containers(s).flatMap { allContainers(it) }
   println(allContainers("shiny gold").size)
+
+  val contains = rules.toMap()
+  fun allContains(s: String): Int =
+    1 + contains[s].orEmpty().fold(0) { total, (count, color) -> total + count * allContains(color) }
+  println(allContains("shiny gold") - 1)
 }
