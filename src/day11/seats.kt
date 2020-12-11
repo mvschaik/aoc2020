@@ -6,22 +6,24 @@ const val floor = '.'
 const val empty = 'L'
 const val occupied = '#'
 
-fun readGrid(filename: String): List<List<Char>> {
+typealias Grid = List<List<Char>>
+
+fun readGrid(filename: String): Grid {
   val grid = File(filename).readLines().map { "$floor$it$floor" }.map { it.toList() }
   val empty = List(grid[0].size) { floor }
   return listOf(empty) + grid + listOf(empty)
 }
 
-fun print(grid: List<List<Char>>) {
+fun print(grid: Grid) {
   println(grid.joinToString("\n") { it.joinToString("") })
 }
 
-fun adjacent(grid: List<List<Char>>, row: Int, col: Int) =
+fun adjacent(grid: Grid, row: Int, col: Int) =
   listOf(grid[row-1][col-1], grid[row-1][col], grid[row-1][col+1],
          grid[row  ][col-1],                   grid[row  ][col+1],
          grid[row+1][col-1], grid[row+1][col], grid[row+1][col+1])
 
-fun visible(grid: List<List<Char>>, row: Int, col: Int): List<Char> {
+fun visible(grid: Grid, row: Int, col: Int): List<Char> {
   val dirs = listOf(Pair(-1, -1), Pair(-1, 0), Pair(-1, 1),
                     Pair( 0, -1),              Pair( 0, 1),
                     Pair( 1, -1), Pair( 1, 0), Pair( 1, 1))
@@ -38,9 +40,7 @@ fun visible(grid: List<List<Char>>, row: Int, col: Int): List<Char> {
   }
 }
 
-fun next(grid: List<List<Char>>,
-         fn: (List<List<Char>>, Int, Int) -> List<Char>,
-         tooManyPeople: Int): List<List<Char>> {
+fun next(grid: Grid, fn: (Grid, Int, Int) -> List<Char>, tooManyPeople: Int): Grid {
   val newGrid = List(grid.size) { MutableList(grid[0].size) { floor } }
   for (row in 1 until grid.size) {
     for (col in 1 until grid[0].size) {
