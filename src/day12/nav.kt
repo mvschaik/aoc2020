@@ -17,34 +17,32 @@ val south = Vector(0, 1)
 
 data class Vector(val x: Int, val y: Int) {
     operator fun times(i: Int) = Vector(x * i, y * i)
+    operator fun plus(v: Vector) = Vector(x + v.x, y + v.y)
+
     fun left(degrees: Int): Vector = when (degrees) {
         90 -> Vector(-y, x)
         else -> left(degrees - 90).left(90)
     }
+
     fun right(degrees: Int): Vector = when (degrees) {
         90 -> Vector(y, -x)
         else -> right(degrees - 90).right(90)
     }
 }
 
-data class Position(val x: Int, val y: Int) {
-    operator fun plus(v: Vector) = Position(x + v.x, y + v.y)
-
-}
-
 class Ship {
-    var position = Position(0, 0)
-    var direction = Vector(-1, 0)
+    var position = Vector(0, 0)
+    var waypoint = Vector(-10, -1)
 
     fun process(instruction: Instruction) {
         when (instruction.action) {
-            'F' -> position += direction * instruction.value
-            'N' -> position += north * instruction.value
-            'S' -> position += south * instruction.value
-            'E' -> position += east * instruction.value
-            'W' -> position += west * instruction.value
-            'L' -> direction = direction.left(instruction.value)
-            'R' -> direction = direction.right(instruction.value)
+            'F' -> position += waypoint * instruction.value
+            'N' -> waypoint += north * instruction.value
+            'S' -> waypoint += south * instruction.value
+            'E' -> waypoint += east * instruction.value
+            'W' -> waypoint += west * instruction.value
+            'L' -> waypoint = waypoint.left(instruction.value)
+            'R' -> waypoint = waypoint.right(instruction.value)
         }
     }
 
