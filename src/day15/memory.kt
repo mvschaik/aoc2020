@@ -2,19 +2,20 @@ package day15
 
 fun main() {
   val initial = listOf(20,0,1,11,6,3)
-  val elements = mutableListOf(-1)
+  val numWanted = 30000000
+
   val seen = mutableMapOf<Int, Int>()
-  (1 .. 2020).forEach { i ->
-    val lastNum = elements[i-1]
+  var lastNum = -1
+  for (i in 0 until numWanted) {
     var el = 0
-    if (i-1 in initial.indices) {
-      el = initial[i-1]
+    if (i in initial.indices) {
+      el = initial[i]
     } else if (lastNum in seen) {
-      el = i - 1 - seen[lastNum]!!
+      el = i - seen[lastNum]!!
     }
-    seen[lastNum] = i - 1
-    elements.add(el)
+    seen[lastNum] = i
+    lastNum = el
   }
 
-  println(elements[2020])
+  println(lastNum)
 }
